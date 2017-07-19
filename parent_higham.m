@@ -13,31 +13,28 @@ K2=1e-4;
 K3=0.1;
 
 time=t(1);
-u1=zeros(size(time));
-u4=zeros(size(time));
-i=0
-
-figure
-hold on
+u1=zeros(size(time)); u1(1)=u(1);
+u2=zeros(size(time)); u2(1)=u(2);
+u3=zeros(size(time)); u3(1)=u(3);
+u4=zeros(size(time)); u4(1)=u(4);
+i=1;
 
 while time<tend
     
-    i=i+1
+    i=i+1;
     
-    [u,num]=newton_higham(k,u,tol,iter,K1,K2,K3)
+    [u,num]=newton_higham(k,u,tol,iter,K1,K2,K3);
     
-    u1(i)=u(1); u4(i)=u(4);
+    u1(i)=u(1); u2(i)=u(2); u3(i)=u(3); u4(i)=u(4);
     
-    plot(time,u(1),'r',time,u(2),'b')
-    pause(0.05)
-    %{
+    %%{
     if num<4
         k=k*2;
     else if num>8
         k=k/2;
         end
     end
-    %}    
+    %%}    
     if time+k>tend
         time=tend;
     else time=time+k;
@@ -47,15 +44,40 @@ end
 
 t=t(1:length(u1));
 
-plot(t(1:5:end),u1(1:5:end),'bo',t(1:5:end),u4(1:5:end),'rs')
-lgn=legend('Substrate','Product');
+figure
+hold on
+
+sp=round(n/20);
+plot(highamTime,higham1,'b--*',t(1:sp:end),u1(1:sp:end),'bo',...
+    highamTime,higham4,'r--d',t(1:sp:end),u4(1:sp:end),'rs')
+lgn=legend('ode15s Substrate','Newton Substrate','ode15s Product',...
+    'Newton Product');
 lgn.Location='southeast';
 plot(t,u1,'b',t,u4,'r')
 axis([0 50 0 5e-7])
 xlabel('Time')
 ylabel('Concentration')
 
+hold off
+
+figure
+hold on
+
+sp=round(n/20);
+plot(highamTime,higham2,'b--*',t(1:sp:end),u2(1:sp:end),'bo',...
+    highamTime,higham3,'r--d',t(1:sp:end),u3(1:sp:end),'rs')
+lgn=legend('ode15s Enzyme','Newton Enzyme','ode15s Intermediate',...
+    'Newton Intermediate');
+lgn.Location='northwest';
+plot(t,u2,'b',t,u3,'r')
+axis([0 50 0 5e-7])
+xlabel('Time')
+ylabel('Concentration')
+
+hold off
+
 % Data from rre_mm_higham.m/mm_rre.m  Version 7.19.17 #1
+% 
 
 highamTime=[0,...
    0.399974997786883,...
