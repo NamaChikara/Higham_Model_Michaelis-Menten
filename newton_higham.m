@@ -97,7 +97,7 @@ for i=1:iter
             Jac31,Jac32,Jac33,Jac34;...
             Jac41,Jac42,Jac43,Jac44];
         step=-Jac\res;
-        uG=uG+step
+        uG=uG+step;
     
 end
 
