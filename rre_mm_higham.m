@@ -1,5 +1,7 @@
-%function rre_mm_higham
-%
+%% See page 364 of 
+% Higham, D. J. (2008). Modeling and simulating chemical reactions. 
+    % SIAM review, 50(2), 347-368.
+
 % ODE15s solution the Reaction Rate Equation for
 % the Michaelis-Menten system.
 %

@@ -1,3 +1,7 @@
+%% See page 364 of 
+% Higham, D. J. (2008). Modeling and simulating chemical reactions. 
+    % SIAM review, 50(2), 347-368.
+
 function yprime = mm_rre(t,y)
 k1 = 1e6; k2 = 1e-4; k3 = 0.1;
 % MM_RRE Michaelis-Menten Reaction Rate Equation
