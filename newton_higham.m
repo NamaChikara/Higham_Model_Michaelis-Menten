@@ -37,13 +37,13 @@ for i=1:iter
     res(4)=uG(4)-u(4)-k.*f4(uG);
     
     % Tolerance applied to Absolute Error
-    %%{
+    %{
     if norm(res,inf)<tol
         out=uG;
-        num=i;
+        num=i
         break
     end
-    %%}
+    %}
     %{
     % Tolerance applied to Relative Error
     
@@ -52,24 +52,24 @@ for i=1:iter
     end
     
     if i>1 && norm(res,inf)/res0<tol
-        out=u;
-    
+        out=uG;
         num=i;
-        if num<4
-            k=k*2;
-        else if num>8
-            k=k/2;
-            end
-        end
-    
-        if time+k>tend
-            time=tend;
-        else time=time+k;
-        end
-        return
+        break
     end
     %}
-
+    %%{
+    % Tolerance applied to both Absolute and Relativ Error
+    if i==1 
+        res0=norm(res,inf);     % Set scaling factor for relative tolerance
+    end
+    
+    if i>1 && norm(res,inf) && norm(res,inf)/res0<tol 
+        out=uG;
+        num=i;
+        break
+    end
+    %%}
+    
     Jac11=ones(size(uG(1,:)))+(k*K1).*uG(2,:);       % dr1/duG1
     Jac21=(k*K1).*uG(2,:);                          % dr2/duG1
     Jac31=-(k*K1).*uG(2,:);                         % dr3/duG1

@@ -1,18 +1,19 @@
 n=250;
 tend=50;
 k=tend/n;
-t=(0:k:tend);
+% time vector created within code
 
 u=[5e-7;2e-7;0;0];  % initial condition
 
-tol=1e-8; % tolerance for exiting Multi_Newton loop
+tol=1e-12; % tolerance for exiting Multi_Newton loop
 iter=20; % number of iterations for Multi_Newton
 
 K1=1e6;  % reaction coefficients
 K2=1e-4;
 K3=0.1;
 
-time=t(1);
+time=0;
+t(1)=0;
 u1=zeros(size(time)); u1(1)=u(1);
 u2=zeros(size(time)); u2(1)=u(2);
 u3=zeros(size(time)); u3(1)=u(3);
@@ -37,7 +38,9 @@ while time<tend
     %%}    
     if time+k>tend
         time=tend;
+        t(i)=time;
     else time=time+k;
+        t(i)=time;
     end
     
 end
@@ -47,7 +50,7 @@ t=t(1:length(u1));
 figure
 hold on
 
-sp=round(n/20);
+sp=1;%round(n/20);
 plot(highamTime,higham1,'b--*',t(1:sp:end),u1(1:sp:end),'bo',...
     highamTime,higham4,'r--d',t(1:sp:end),u4(1:sp:end),'rs')
 lgn=legend('ode15s Substrate','Newton Substrate','ode15s Product',...
@@ -60,6 +63,7 @@ ylabel('Concentration')
 
 hold off
 
+%{
 figure
 hold on
 
@@ -75,7 +79,8 @@ xlabel('Time')
 ylabel('Concentration')
 
 hold off
-
+%}
+%{
 % Data from rre_mm_higham.m/mm_rre.m  Version 7.19.17 #1
 % 
 
@@ -183,3 +188,4 @@ higham4=1.0e-06*[0,...
    0.448216640301851,...
    0.466244562383238,...
    0.470267682370779];
+%}
