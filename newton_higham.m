@@ -9,14 +9,15 @@ function [out,num]=newton_higham(k,u,tol,iter,K1,K2,K3)
 
 % Reaction equations
 
-f1=@(x) -K1.*x(1)*(x(2)')+K2.*x(3);
-f2=@(x) -K1.*x(1)*(x(2)')+(K2+K3).*x(3);
-f3=@(x) K1.*x(1)*(x(2)')-(K2+K3).*x(3);
-f4=@(x) K3.*x(3);
+f1=@(x) -K1*x(1)*x(2)+K2.*x(3);
+f2=@(x) -K1*x(1)*x(2)+(K2+K3)*x(3);
+f3=@(x) K1*x(1)*x(2)-(K2+K3)*x(3);
+f4=@(x) K3*x(3);
 
 % Generate initial guess
 
-uG=u+0.01*u;
+%uG=u+0.01*u;
+uG=u;
 
 % Initalize residual
 
@@ -29,7 +30,7 @@ num=NaN;
 
 % Solve for updated u value
 
-for i=1:iter
+while i<iter
     
     res(1)=uG(1)-u(1)-k.*f1(uG);
     res(2)=uG(2)-u(2)-k.*f2(uG);
@@ -37,13 +38,13 @@ for i=1:iter
     res(4)=uG(4)-u(4)-k.*f4(uG);
     
     % Tolerance applied to Absolute Error
-    %{
+    %%{
     if norm(res,inf)<tol
         out=uG;
-        num=i
+        num=i;
         break
     end
-    %}
+    %%}
     %{
     % Tolerance applied to Relative Error
     
@@ -57,7 +58,7 @@ for i=1:iter
         break
     end
     %}
-    %%{
+    %{
     % Tolerance applied to both Absolute and Relativ Error
     if i==1 
         res0=norm(res,inf);     % Set scaling factor for relative tolerance
@@ -68,7 +69,7 @@ for i=1:iter
         num=i;
         break
     end
-    %%}
+    %}
     
     Jac11=ones(size(uG(1,:)))+(k*K1).*uG(2,:);       % dr1/duG1
     Jac21=(k*K1).*uG(2,:);                          % dr2/duG1
